@@ -1,8 +1,9 @@
 package org.jetbrains.plugins.scala.failed.resolve
 
+import com.intellij.psi.ResolveResult
 import org.jetbrains.plugins.scala.base.FailableTest
 import org.jetbrains.plugins.scala.lang.psi.api.base.ScReferenceElement
-import org.jetbrains.plugins.scala.lang.resolve.{ScalaResolveResult, ScalaResolveTestCase}
+import org.jetbrains.plugins.scala.lang.resolve.ScalaResolveTestCase
 import org.junit.Assert._
 
 /**
@@ -19,7 +20,7 @@ abstract class FailedResolveTest(dirName: String) extends ScalaResolveTestCase w
   def doTest(): Unit = {
     findReferenceAtCaret() match {
       case ref: ScReferenceElement =>
-        val variants = ref.multiResolveScala(false)
+        val variants = ref.multiResolve(false)
         if (shouldPass) {
           assertTrue(s"Single resolve expected, was: ${variants.length}", variants.length == 1 &&
             variants.head.isValidResult && additionalAsserts(variants, ref))
@@ -29,5 +30,5 @@ abstract class FailedResolveTest(dirName: String) extends ScalaResolveTestCase w
     }
   }
 
-  protected def additionalAsserts(variants: Array[ScalaResolveResult], ref: ScReferenceElement): Boolean = true
+  protected def additionalAsserts(variants: Array[ResolveResult], ref: ScReferenceElement): Boolean = true
 }
