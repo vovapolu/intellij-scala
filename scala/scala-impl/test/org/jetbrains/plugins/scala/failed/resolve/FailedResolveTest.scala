@@ -20,7 +20,7 @@ abstract class FailedResolveTest(dirName: String) extends ScalaResolveTestCase w
   def doTest(): Unit = {
     findReferenceAtCaret() match {
       case ref: ScReferenceElement =>
-        val variants = ref.multiResolve(false)
+        val variants = ref.multiResolveScala(false)
         if (shouldPass) {
           assertTrue(s"Single resolve expected, was: ${variants.length}", variants.length == 1 &&
             variants.head.isValidResult && additionalAsserts(variants, ref))
