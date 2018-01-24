@@ -21,8 +21,7 @@ class ScalaHighlightingTest extends ScalaHighlightingTestBase {
       |  foo(inc2())
       |}
     """.stripMargin.trim
-    val errors = errorsFromScalaCode(scalaText)
-    assert(errors.isEmpty)
+    assertNothing(errorsFromScalaCode(scalaText))
   }
 
   def testSCL8267(): Unit = {
@@ -48,8 +47,7 @@ class ScalaHighlightingTest extends ScalaHighlightingTestBase {
         |  })
         |}
       """.stripMargin
-    val errors = errorsFromScalaCode(scalaText)
-    assert(errors.isEmpty)
+    assertNothing(errorsFromScalaCode(scalaText))
   }
 
   def testSCL6379(): Unit = {
@@ -64,12 +62,8 @@ class ScalaHighlightingTest extends ScalaHighlightingTestBase {
         |  val mathematician :String = "Euler"
         |}
       """.stripMargin
-    val errors = errorsFromScalaCode(scalaText)
-    assert(errors.length == 1)
-    errors.head match {
-      case Error(_, message) =>
-        Assert.assertEquals(message, "Pattern type is incompatible with expected type, found: Int, required: String")
-      case err => Assert.fail(s"unexpected message: $err" )
+    assertMatches(errorsFromScalaCode(scalaText)){
+      case Error(_, "Pattern type is incompatible with expected type, found: Int, required: String") :: Nil =>
     }
   }
 
@@ -82,8 +76,18 @@ class ScalaHighlightingTest extends ScalaHighlightingTestBase {
       |  @native private def myNativeMethod: Integer
       |}
       """.stripMargin
-    val errors = errorsFromScalaCode(scalaText)
-    assert(errors.isEmpty)
+    assertNothing(errorsFromScalaCode(scalaText))
   }
 
+  def testScl11193(): Unit = {
+    val scalaText =
+      """
+        |class Test {
+        |  val a: 42 = 42
+        |}
+      """.stripMargin
+    assertMatches(errorsFromScalaCode(scalaText)) {
+      case Error(_, "Wrong type '42', for literal types support please use '-Yliteral-types' compiler flag") :: Nil =>
+    }
+  }
 }
