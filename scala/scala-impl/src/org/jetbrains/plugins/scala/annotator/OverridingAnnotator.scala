@@ -209,6 +209,7 @@ trait OverridingAnnotator {
           }
         }
       }
+
       member match {
         case _: ScFunctionDefinition =>
           annotateFunFromValOrVar()
