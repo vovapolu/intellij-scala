@@ -15,6 +15,7 @@ import org.jetbrains.plugins.scala.lang.psi.api.statements.params.ScClassParamet
 import org.jetbrains.plugins.scala.lang.psi.api.toplevel.typedef.ScTypeDefinition
 import org.jetbrains.plugins.scala.lang.psi.api.toplevel.{ScModifierListOwner, ScNamedElement}
 import org.jetbrains.plugins.scala.lang.psi.types.Signature
+import org.jetbrains.plugins.scala.lang.psi.types.result.Typeable
 import org.jetbrains.plugins.scala.statistics.{FeatureKey, Stats}
 
 /**
@@ -205,6 +206,7 @@ trait OverridingAnnotator {
           }
         }
       }
+
       member match {
         case _: ScFunctionDefinition =>
           annotateFunFromValOrVar()
@@ -215,6 +217,24 @@ trait OverridingAnnotator {
         case _ =>
       }
     }
-
+    member match {
+      case tMember: Typeable if superSignatures.nonEmpty =>
+        tMember.`type`().foreach { aType =>
+          superSignatures.foreach {
+            case s: Signature =>
+              s.namedElement match {
+                case tp: Typeable =>
+                  tp.`type`().foreach { otherType =>
+                    if (!aType.conforms(otherType))
+                      holder.createErrorAnnotation(member.nameId,
+                        ScalaBundle.message("override.types.not.conforming", aType.presentableText, otherType.presentableText))
+                  }
+                case _ =>
+              }
+            case _ =>
+          }
+        }
+      case _ =>
+    }
   }
 }
