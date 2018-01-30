@@ -29,4 +29,32 @@ class OverrideHighlightingTest extends ScalaHighlightingTestBase {
        """.stripMargin
     assertNothing(errorsFromScalaCode(code))
   }
+
+  def testScl13051_2(): Unit = {
+    val code =
+      s"""
+         |trait Base {
+         |  def foo(x: Int): Int = 42
+         |  def foo(x: String): String = "42"
+         |}
+         |class AClass extends Base {
+         |  override def foo(x: Int): Int = 42
+         |}
+       """.stripMargin
+    assertNothing(errorsFromScalaCode(code))
+  }
+
+  def testSCL13051_3(): Unit = {
+    val code =
+      s"""
+         |trait Base[c] {
+         |  def foo: c
+         |}
+         |
+         |class AClass[a] extends Base[a]{
+         |  override val foo: a = ???
+         |}
+       """.stripMargin
+    assertNothing(errorsFromScalaCode(code))
+  }
 }

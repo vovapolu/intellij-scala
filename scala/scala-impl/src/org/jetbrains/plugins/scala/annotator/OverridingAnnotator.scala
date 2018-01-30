@@ -206,7 +206,6 @@ trait OverridingAnnotator {
           }
         }
       }
-
       member match {
         case _: ScFunctionDefinition =>
           annotateFunFromValOrVar()
@@ -225,7 +224,7 @@ trait OverridingAnnotator {
               s.namedElement match {
                 case tp: Typeable =>
                   tp.`type`().foreach { otherType =>
-                    if (!aType.conforms(otherType))
+                    if (!aType.conforms(s.substitutor.subst(otherType)))
                       holder.createErrorAnnotation(member.nameId,
                         ScalaBundle.message("override.types.not.conforming", aType.presentableText, otherType.presentableText))
                   }
