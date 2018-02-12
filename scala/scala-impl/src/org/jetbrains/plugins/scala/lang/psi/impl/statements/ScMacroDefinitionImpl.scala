@@ -63,7 +63,7 @@ class ScMacroDefinitionImpl private (stub: ScFunctionStub, node: ASTNode)
 
   override def toString: String = "ScMacroDefinition: " + ifReadAllowed(name)("")
 
-  override protected def returnTypeInner: TypeResult = returnTypeElement match {
+  override protected def returnTypeInner: TypeResult = typeElement match {
     case Some(rte: ScTypeElement) => rte.`type`()
     case None => Right(Any) // TODO look up type from the macro impl.
   }

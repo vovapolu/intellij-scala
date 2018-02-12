@@ -19,7 +19,7 @@ class VariableNullInitializerInspection extends AbstractInspection(inspectionId,
 
   override def actionFor(implicit holder: ProblemsHolder): PartialFunction[PsiElement, Unit] = {
     case definition: ScVariableDefinition if !definition.isLocal =>
-      val maybeDeclaredType = definition.declaredType
+      val maybeDeclaredType = definition.declaredType.toOption
         .filter(isApplicable)
 
       val maybeExpression = definition.expr

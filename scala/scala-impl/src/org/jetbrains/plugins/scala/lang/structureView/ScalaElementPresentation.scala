@@ -51,7 +51,7 @@ object ScalaElementPresentation {
       presentableText.append(StructureViewUtil.getParametersAsString(function.paramClauses, fast, subst))
 
     if (fast) {
-      function.returnTypeElement.foreach(rt => presentableText.append(s": ${rt.getText}"))
+      function.typeElement.foreach(rt => presentableText.append(s": ${rt.getText}"))
     } else {
       presentableText.append(": ")
       try {

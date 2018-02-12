@@ -70,7 +70,7 @@ object AbstractTypeAnnotationIntention {
   def complete(element: PsiElement,
                strategy: Strategy = new AddOnlyStrategy): Boolean = {
     functionParent(element).foreach { function =>
-      return function.returnTypeElement match {
+      return function.typeElement match {
         case Some(typeElement) =>
           strategy.functionWithType(function, typeElement)
         case _ =>

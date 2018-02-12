@@ -106,7 +106,7 @@ object CreateFromUsageUtil {
   def addUnapplyResultTypesToTemplate(fun: ScFunction, builder: TemplateBuilder): Unit = {
     TypeAnnotationUtil.removeTypeAnnotationIfNeeded(fun)
 
-    fun.returnTypeElement match {
+    fun.typeElement match {
       case Some(ScParameterizedTypeElement(_, Seq(tuple: ScTupleTypeElement))) => //Option[(A, B)]
         tuple.components.foreach(te => builder.replaceElement(te, te.getText))
       case Some(ScParameterizedTypeElement(_, args)) =>

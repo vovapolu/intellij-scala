@@ -1209,7 +1209,7 @@ abstract class ScalaAnnotator extends Annotator
   private def checkFunctionForVariance(fun: ScFunction, holder: AnnotationHolder) {
     if (!modifierIsThis(fun) && !compoundType(fun)) { //if modifier contains [this] or if it is a compound type we do not highlight it
       checkBoundsVariance(fun, holder, fun.nameId, fun.getParent)
-      if (!childHasAnnotation(fun.returnTypeElement, "uncheckedVariance")) {
+      if (!childHasAnnotation(fun.typeElement, "uncheckedVariance")) {
         fun.returnType match {
           case Right(returnType) =>
             checkVariance(ScalaType.expandAliases(returnType).getOrElse(returnType), Covariant, fun.nameId,

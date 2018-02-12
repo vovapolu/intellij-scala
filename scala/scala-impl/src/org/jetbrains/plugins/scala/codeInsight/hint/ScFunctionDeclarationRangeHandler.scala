@@ -15,7 +15,7 @@ class ScFunctionDeclarationRangeHandler extends DeclarationRangeHandler[ScFuncti
     val startOffset: Int =
       if (textRange != null) textRange.getStartOffset
       else function.getTextOffset
-    val endOffset: Int = function.returnTypeElement match {
+    val endOffset: Int = function.typeElement match {
       case Some(te) => te.getTextRange.getEndOffset
       case None => function.paramClauses.getTextRange.getEndOffset
     }

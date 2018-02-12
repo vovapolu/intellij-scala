@@ -252,7 +252,7 @@ class ImplicitCollector(place: PsiElement,
         ScalaPsiUtil.isInvalidContextOrder(getPlace, e, e.containingFile)
 
       c.getElement match {
-        case fun: ScFunction if fun.returnTypeElement.isEmpty => lowerInFile(fun)
+        case fun: ScFunction if fun.typeElement.isEmpty => lowerInFile(fun)
         case pattern@ScalaPsiUtil.inNameContext(pd: ScPatternDefinition) if pd.typeElement.isEmpty => lowerInFile(pattern)
         case _ => false
       }

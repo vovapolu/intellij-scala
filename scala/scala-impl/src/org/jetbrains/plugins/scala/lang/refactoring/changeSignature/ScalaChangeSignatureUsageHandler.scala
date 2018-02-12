@@ -91,7 +91,7 @@ private[changeSignature] trait ScalaChangeSignatureUsageHandler {
     val element = usage.namedElement
 
     val oldTypeElem = element match {
-      case fun: ScFunction => fun.returnTypeElement
+      case fun: ScFunction => fun.typeElement
       case ScalaPsiUtil.inNameContext(pd: ScPatternDefinition) => pd.typeElement
       case ScalaPsiUtil.inNameContext(vd: ScVariableDefinition) => vd.typeElement
       case cp: ScClassParameter => cp.typeElement

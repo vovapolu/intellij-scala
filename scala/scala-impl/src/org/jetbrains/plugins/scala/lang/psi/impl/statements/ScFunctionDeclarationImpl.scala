@@ -34,7 +34,7 @@ class ScFunctionDeclarationImpl private (stub: ScFunctionStub, node: ASTNode)
 
   override def toString: String = "ScFunctionDeclaration: " + ifReadAllowed(name)("")
 
-  override protected def returnTypeInner: TypeResult = returnTypeElement match {
+  override protected def returnTypeInner: TypeResult = typeElement match {
     case Some(t) => t.`type`()
     case None => Right(Unit)
   }

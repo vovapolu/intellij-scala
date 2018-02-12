@@ -247,7 +247,7 @@ class ScReferenceExpressionImpl(node: ASTNode) extends ScReferenceElementImpl(no
                                   super.visitSimpleTypeElement(simple)
                                 }
                               }
-                              f.returnTypeElement.foreach(_.accept(visitor))
+                              f.typeElement.foreach(_.accept(visitor))
                               if (found) return true
                             case _ => //looks like it's not working for classes, so do nothing here.
                           }
@@ -283,12 +283,12 @@ class ScReferenceExpressionImpl(node: ASTNode) extends ScReferenceElementImpl(no
       case r@ScalaResolveResult(refPatt: ScBindingPattern, s) =>
         ScalaPsiUtil.nameContext(refPatt) match {
           case pd: ScPatternDefinition if PsiTreeUtil.isContextAncestor(pd, this, true) => pd.declaredType match {
-            case Some(t) => t
-            case None => return Failure("No declared type found")
+            case Right(t) => t
+            case Left(_) => return Failure("No declared type found")
           }
           case vd: ScVariableDefinition if PsiTreeUtil.isContextAncestor(vd, this, true) => vd.declaredType match {
-            case Some(t) => t
-            case None => return Failure("No declared type found")
+            case Right(t) => t
+            case Left(_) => return Failure("No declared type found")
           }
           case _ =>
             if (stableTypeRequired && refPatt.isStable) {
@@ -325,7 +325,7 @@ class ScReferenceExpressionImpl(node: ASTNode) extends ScReferenceElementImpl(no
             res
           }
 
-          function.returnTypeElement match {
+          function.typeElement match {
             case Some(te) if checkte(te) => return true
             case _ =>
           }

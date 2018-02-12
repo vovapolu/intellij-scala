@@ -152,7 +152,7 @@ object ScalaUsageTypeProvider {
     def isAppropriate(maybeTypeElement: Option[ScTypeElement]) = maybeTypeElement.contains(typeElement)
 
     typeElement.getParent match {
-      case function: ScFunction if isAppropriate(function.returnTypeElement) =>
+      case function: ScFunction if isAppropriate(function.typeElement) =>
         CLASS_METHOD_RETURN_TYPE
       case valueOrVariable: ScValueOrVariable if isAppropriate(valueOrVariable.typeElement) =>
         if (valueOrVariable.isLocal) CLASS_LOCAL_VAR_DECLARATION else CLASS_FIELD_DECLARATION

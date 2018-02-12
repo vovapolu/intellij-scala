@@ -31,7 +31,7 @@ object TypeAnnotationUtil {
   // val Some(v: String) = Some(new Object()) - compiles OK
   // Thus, the presence of type affects the outcome, and such a type is not optional.
   private def getTypeElement(element: ScalaPsiElement): Option[ScTypeElement] = element match {
-    case function: ScFunction => function.returnTypeElement
+    case function: ScFunction => function.typeElement
     case pattern: ScPatternDefinition => pattern.typeElement
     case variable: ScVariableDefinition => variable.typeElement
     case _ => None

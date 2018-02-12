@@ -52,7 +52,7 @@ abstract class ScFunctionImpl protected (stub: ScFunctionStub, nodeType: ScFunct
 
     lazy val parameterIncludingSynthetic: Seq[ScParameter] = effectiveParameterClauses.flatMap(_.effectiveParameters)
     if (getStub == null) {
-      returnTypeElement match {
+      typeElement match {
         case Some(x) if lastParent != null && x.startOffsetInParent == lastParent.startOffsetInParent =>
           for (p <- parameterIncludingSynthetic) {
             ProgressManager.checkCanceled()
@@ -72,5 +72,5 @@ abstract class ScFunctionImpl protected (stub: ScFunctionStub, nodeType: ScFunct
   }
 
   @Cached(ModCount.anyScalaPsiModificationCount, this)
-  def returnTypeElement: Option[ScTypeElement] = byPsiOrStub(findChild(classOf[ScTypeElement]))(_.typeElement)
+  def typeElement: Option[ScTypeElement] = byPsiOrStub(findChild(classOf[ScTypeElement]))(_.typeElement)
 }

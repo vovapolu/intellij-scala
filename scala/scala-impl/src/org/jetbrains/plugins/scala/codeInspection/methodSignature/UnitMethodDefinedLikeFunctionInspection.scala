@@ -14,7 +14,7 @@ class UnitMethodDefinedLikeFunctionInspection extends AbstractMethodSignatureIns
 
   override def actionFor(implicit holder: ProblemsHolder): PartialFunction[PsiElement, Unit] = {
     case f: ScFunctionDefinition if f.hasUnitResultType =>
-      f.returnTypeElement.foreach { e =>
+      f.typeElement.foreach { e =>
         holder.registerProblem(e, getDisplayName, new RemoveTypeAnnotationAndEqualSign(f))
       }
   }

@@ -12,7 +12,7 @@ class InsertMissingEquals(functionDecl: ScFunctionDeclaration)
 
   override protected def doApplyFix(funDef: ScFunctionDeclaration)
                                    (implicit project: Project): Unit = {
-    funDef.returnTypeElement match {
+    funDef.typeElement match {
       case Some(ScCompoundTypeElement(types, Some(refinement))) if types.nonEmpty =>
         val lastTypeInDecl = types.last.getTextRange.getEndOffset - funDef.getTextRange.getStartOffset
         val defAndReturnType = funDef.getText.substring(0, lastTypeInDecl)

@@ -24,5 +24,5 @@ class AddReturnTypeFix(fun: ScFunctionDefinition, tp: ScType) extends IntentionA
 
   override def startInWriteAction(): Boolean = true
 
-  override def isAvailable(project: Project, editor: Editor, file: PsiFile): Boolean = fun.returnTypeElement.isEmpty
+  override def isAvailable(project: Project, editor: Editor, file: PsiFile): Boolean = fun.typeElement.isEmpty
 }

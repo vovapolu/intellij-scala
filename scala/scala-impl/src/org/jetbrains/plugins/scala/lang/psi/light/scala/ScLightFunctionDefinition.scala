@@ -42,7 +42,7 @@ class ScLightFunctionDefinition(pTypes: Seq[Seq[ScType]], tParams: Seq[TypeParam
 
   override def getModifierList: ScModifierList = fun.getModifierList
 
-  override def returnTypeElement: Option[ScTypeElement] = fun.returnTypeElement
+  override def typeElement: Option[ScTypeElement] = fun.typeElement
 
   override def name: String = fun.name
 

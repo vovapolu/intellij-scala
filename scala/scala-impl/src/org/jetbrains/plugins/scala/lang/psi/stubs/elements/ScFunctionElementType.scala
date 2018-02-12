@@ -42,7 +42,7 @@ abstract class ScFunctionElementType(debugName: String) extends ScStubElementTyp
   override def createStubImpl(function: ScFunction, parentStub: StubElement[_ <: PsiElement]): ScFunctionStub = {
     val maybeFunction = Option(function)
     val returnTypeText = maybeFunction.flatMap {
-      _.returnTypeElement
+      _.typeElement
     }.map {
       _.getText
     }

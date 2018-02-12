@@ -14,7 +14,7 @@ class UnitMethodDeclaredWithTypeAnnotationInspection extends AbstractMethodSigna
 
   override def actionFor(implicit holder: ProblemsHolder): PartialFunction[PsiElement, Unit] = {
     case f: ScFunctionDeclaration if f.hasUnitResultType =>
-      f.returnTypeElement.foreach { e =>
+      f.typeElement.foreach { e =>
         holder.registerProblem(e, getDisplayName, new RemoveTypeAnnotation(f))
       }
   }

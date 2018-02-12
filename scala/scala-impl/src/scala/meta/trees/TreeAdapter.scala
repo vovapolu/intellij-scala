@@ -67,7 +67,7 @@ trait TreeAdapter {
     m.Defn.Def(convertMods(t), toTermName(t),
       Seq(t.typeParameters map toTypeParams: _*),
       Seq(t.paramClauses.clauses.map(convertParamClause): _*),
-      t.returnTypeElement.map(toType),
+      t.typeElement.map(toType),
       expression(t.body).getOrElse(m.Term.Block(Nil))
     )
   }
@@ -78,13 +78,13 @@ trait TreeAdapter {
   }
 
   def toVarDefn(t: ScVariableDefinition): m.Defn.Var = {
-    m.Defn.Var(convertMods(t), Seq(t.pList.patterns.map(pattern): _*), t.declaredType.map(toType(_)), expression(t.expr))
+    m.Defn.Var(convertMods(t), Seq(t.pList.patterns.map(pattern): _*), t.declaredType.map(toType(_)).toOption, expression(t.expr))
   }
 
   def toFunDecl(t: ScFunctionDeclaration): m.Decl.Def = {
     m.Decl.Def(convertMods(t), toTermName(t), Seq(t.typeParameters map toTypeParams: _*),
       Seq(t.paramClauses.clauses.map(convertParamClause): _*),
-      t.returnTypeElement.map(toType).getOrElse(toStdTypeName(ptype.api.Unit(t.projectContext))))
+      t.typeElement.map(toType).getOrElse(toStdTypeName(ptype.api.Unit(t.projectContext))))
   }
 
   def toTypeDefn(t: ScTypeAliasDefinition): m.Defn.Type = {
