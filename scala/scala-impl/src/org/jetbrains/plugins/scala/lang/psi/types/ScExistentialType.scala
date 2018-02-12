@@ -206,6 +206,9 @@ case class ScExistentialType(quantified: ScType,
             checkRecursive(tp.lowerType, rejected)
             checkRecursive(tp.upperType, rejected)
           })
+        case ScDesignatorType(id) =>
+          wildcards.find(arg => arg.name == id.getName && !rejected.contains(arg.name)).
+            foreach(arg => res.update(arg, res.getOrElse(arg, Seq.empty[ScType])++ Seq(arg)))
         case _ =>
       }
     }
@@ -244,7 +247,8 @@ case class ScExistentialType(quantified: ScType,
         }, typeMap.map {
           case (s, sign) => (s, sign.updateTypesWithVariance(updateRecursive(_, newSet, _), variance))
         })
-      case ScProjectionType(_, _) => tp
+      case ScProjectionType(projected, elem, false) => ScProjectionType(updateRecursive(projected, rejected, variance), elem, false)
+      case ScProjectionType(_, _, _) => tp
       case JavaArrayType(_) => tp
       case ParameterizedType(designator, typeArgs) =>
         val parameteresIterator = designator match {
@@ -285,7 +289,7 @@ case class ScExistentialType(quantified: ScType,
           updateRecursive(arg, newSet, -variance).asInstanceOf[TypeParameterType]),
           updateRecursive(arg.lower, newSet, -variance), updateRecursive(arg.upper, newSet, variance))))
       case ScThisType(_) => tp
-      case ScDesignatorType(_) => tp
+      case ScDesignatorType(t) => wildcards.find(_.name == t.getName).map(update(variance, _, tp)).getOrElse(tp)
       case _: TypeParameterType =>
         //should return TypeParameterType (for undefined type)
         tp
