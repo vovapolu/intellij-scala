@@ -11,7 +11,7 @@ import org.jetbrains.plugins.scala.lang.psi.api.expr.ExpectedTypes._
 import org.jetbrains.plugins.scala.lang.psi.api.expr._
 import org.jetbrains.plugins.scala.lang.psi.api.statements._
 import org.jetbrains.plugins.scala.lang.psi.api.statements.params.ScParameter
-import org.jetbrains.plugins.scala.lang.psi.api.toplevel.ScTypedDefinition
+import org.jetbrains.plugins.scala.lang.psi.api.toplevel.{ScEarlyDefinitions, ScTypedDefinition}
 import org.jetbrains.plugins.scala.lang.psi.impl.ScalaPsiManager
 import org.jetbrains.plugins.scala.lang.psi.impl.expr.ExpectedTypesImpl._
 import org.jetbrains.plugins.scala.lang.psi.implicits.ImplicitResolveResult
@@ -245,6 +245,7 @@ class ExpectedTypesImpl extends ExpectedTypes {
       case v @ ScPatternDefinition.expr(expr) if expr == sameInContext =>
         v.typeElement match {
           case Some(te) => Array((v.`type`().getOrAny, Some(te)))
+          case _ if v.getParent.isInstanceOf[ScEarlyDefinitions] => Array.empty
           case _ => v.getInheritedReturnType.map((_, None)).toArray
         }
       case v @ ScVariableDefinition.expr(expr) if expr == sameInContext =>
