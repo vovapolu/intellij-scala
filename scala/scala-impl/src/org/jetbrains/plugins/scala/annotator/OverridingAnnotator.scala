@@ -16,7 +16,7 @@ import org.jetbrains.plugins.scala.lang.psi.api.toplevel.typedef.ScTypeDefinitio
 import org.jetbrains.plugins.scala.lang.psi.api.toplevel.{ScModifierListOwner, ScNamedElement}
 import org.jetbrains.plugins.scala.lang.psi.types.api.TypeParameterType
 import org.jetbrains.plugins.scala.lang.psi.types.api.designator.ScDesignatorType
-import org.jetbrains.plugins.scala.lang.psi.types.recursiveUpdate.{AfterUpdate}
+import org.jetbrains.plugins.scala.lang.psi.types.recursiveUpdate.{AfterUpdate, ScSubstitutor}
 import org.jetbrains.plugins.scala.lang.psi.types.{ScParameterizedType, ScType, Signature}
 import org.jetbrains.plugins.scala.lang.psi.types.result.Typeable
 import org.jetbrains.plugins.scala.statistics.{FeatureKey, Stats}
@@ -232,7 +232,7 @@ trait OverridingAnnotator {
         case (sFun: ScFunction, mFun: ScFunction) if sFun.parameters.length == mFun.parameters.length &&
           s.typeParams.length == mFun.typeParameters.length =>
           var res = s.typeParams.zip(mFun.typeParameters).foldLeft(s.substitutor){
-            case (subst, (param, paramType)) => subst.bindT(param.nameAndId, TypeParameterType(paramType))
+            case (subst, (param, paramType)) => subst.followed(ScSubstitutor.bind(Seq(param), Seq(TypeParameterType(paramType))))
           }.subst(baseType)
           for ((sParam, mParam) <- sFun.parameters zip mFun.parameters) {
             res = res.recursiveUpdate({

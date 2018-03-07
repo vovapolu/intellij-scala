@@ -247,8 +247,7 @@ case class ScExistentialType(quantified: ScType,
         }, typeMap.map {
           case (s, sign) => (s, sign.updateTypesWithVariance(updateRecursive(_, newSet, _), variance))
         })
-      case ScProjectionType(projected, elem, false) => ScProjectionType(updateRecursive(projected, rejected, variance), elem, false)
-      case ScProjectionType(_, _, _) => tp
+      case ScProjectionType(projected, elem) => ScProjectionType(updateRecursive(projected, rejected, variance), elem)
       case JavaArrayType(_) => tp
       case ParameterizedType(designator, typeArgs) =>
         val parameteresIterator = designator match {
